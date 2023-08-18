@@ -35,11 +35,13 @@ export class DevconnectPretixAPI implements IDevconnectPretixAPI {
     orgUrl: string,
     token: string
   ): Promise<DevconnectPretixEvent[]> {
-    return traced(TRACE_SERVICE, "fetchItems", async () => {
+    return traced(TRACE_SERVICE, "fetchItems", async (span) => {
       const events: DevconnectPretixEvent[] = [];
 
       // Fetch orders from paginated API
       let url = `${orgUrl}/events`;
+      span?.setAttribute("url", url);
+
       while (url != null) {
         logger(`[DEVCONNECT PRETIX] Fetching events: ${url}`);
         const res = await fetch(url, {
@@ -64,9 +66,11 @@ export class DevconnectPretixAPI implements IDevconnectPretixAPI {
     token: string,
     eventID: string
   ): Promise<DevconnectPretixEvent> {
-    return traced(TRACE_SERVICE, "fetchEvent", async () => {
+    return traced(TRACE_SERVICE, "fetchEvent", async (span) => {
       // Fetch event API
       const url = `${orgUrl}/events/${eventID}/`;
+      span?.setAttribute("url", url);
+
       logger(`[DEVCONNECT PRETIX] Fetching event: ${url}`);
       const res = await fetch(url, {
         headers: { Authorization: `Token ${token}` }
@@ -85,9 +89,11 @@ export class DevconnectPretixAPI implements IDevconnectPretixAPI {
     token: string,
     eventID: string
   ): Promise<DevconnectPretixEventSettings> {
-    return traced(TRACE_SERVICE, "fetchEventSettings", async () => {
+    return traced(TRACE_SERVICE, "fetchEventSettings", async (span) => {
       // Fetch event settings API
       const url = `${orgUrl}/events/${eventID}/settings`;
+      span?.setAttribute("url", url);
+
       logger(`[DEVCONNECT PRETIX] Fetching event settings: ${url}`);
       const res = await fetch(url, {
         headers: { Authorization: `Token ${token}` }
@@ -106,11 +112,13 @@ export class DevconnectPretixAPI implements IDevconnectPretixAPI {
     token: string,
     eventID: string
   ): Promise<DevconnectPretixItem[]> {
-    return traced(TRACE_SERVICE, "fetchItems", async () => {
+    return traced(TRACE_SERVICE, "fetchItems", async (span) => {
       const items: DevconnectPretixItem[] = [];
 
       // Fetch orders from paginated API
       let url = `${orgUrl}/events/${eventID}/items/`;
+      span?.setAttribute("url", url);
+
       while (url != null) {
         logger(`[DEVCONNECT PRETIX] Fetching items: ${url}`);
         const res = await fetch(url, {
@@ -136,11 +144,13 @@ export class DevconnectPretixAPI implements IDevconnectPretixAPI {
     token: string,
     eventID: string
   ): Promise<DevconnectPretixOrder[]> {
-    return traced(TRACE_SERVICE, "fetchOrders", async () => {
+    return traced(TRACE_SERVICE, "fetchOrders", async (span) => {
       const orders: DevconnectPretixOrder[] = [];
 
       // Fetch orders from paginated API
       let url = `${orgUrl}/events/${eventID}/orders/`;
+      span?.setAttribute("url", url);
+
       while (url != null) {
         logger(`[DEVCONNECT PRETIX] Fetching orders ${url}`);
         const res = await fetch(url, {
